@@ -1,0 +1,38 @@
+body{
+  margin-top: 50px;
+}
+
+.divide-nav{
+  height: 90px;
+  background-color: #428bca;
+}
+
+.divide-text{
+    color:#fff;
+    line-height: 30px;
+    font-size:30px;
+    padding: 40px 0;
+    padding-left: 15px;
+}
+
+.affix {
+  top: 50px;
+  width:100%;
+  z-index: 10;
+}
+
+.affix + .container {
+    padding-top:75px
+}
+
+.filler{
+  min-height: 800px;
+}
+
+.navbar-form {
+   padding-left: 0;
+}
+
+.navbar-collapse{
+   padding-left:0;
+}
