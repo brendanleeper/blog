@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, request, url_for
-from flask_login import login_user, current_user, login_required
+from flask_login import login_user, logout_user, current_user, login_required
 from playhouse.flask_utils import get_object_or_404
 from markdown import markdown
 from markdown.extensions.codehilite import CodeHiliteExtension
@@ -9,7 +9,7 @@ from micawber.cache import Cache as OEmbedCache
 
 from app import app, login_manager
 from .forms import MyLoginForm
-from app.models import User, Entry
+from app.models import User, Entry, Project
 from app.auth import user_manager
 
 
@@ -40,7 +40,8 @@ def login():
         flash('Logged in successfully.', 'success')
 
         next = request.args.get('next')
-
+        if next == "/logout":
+            next = None
         return redirect(next or url_for('index'))
     return render_template('login.html', title='Login', form=form)
 
@@ -89,7 +90,8 @@ def create():
 @login_required
 def projects():
     user = current_user
-    return render_template('navbartest.html')
+    query = Project.select().order_by(Project.ts_created.desc())
+    return object_list('projects.html', query)
 
 @app.route('/ideas')
 @login_required

@@ -82,6 +82,7 @@
     </div>
     {% endblock %}
   </div>
+  {% if current_user.is_authenticated %}
   <div data-spy="affix" data-offset-top="90" data-offset-bottom="0">
     <nav class="navbar navbar-default navbar-lower" role="navigation">
     <div class="container">
@@ -94,6 +95,7 @@
     </div>
     </nav>
   </div>
+  {% endif %}
   <div class="container">
     {% for category, message in get_flashed_messages(with_categories=true) %}
       <div class="alert alert-{{ category }} alert-dismissable">
