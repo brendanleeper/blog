@@ -42,10 +42,6 @@ body{
    padding-left:0;
 }
 
-.dropdown {
-  border-left: 1px solid rgba(255,255,255,.3);
-}
-
 navbar-right > li {
   border-left: 1px solid rgba(255,255,255,.3);
 }

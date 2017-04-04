@@ -42,15 +42,28 @@ class User(BaseModel, UserMixin):
 class Project(BaseModel):
     name = CharField()
     slug = CharField(unique=True)
+    desc = TextField()
     ts_created = DateTimeField(default=datetime.datetime.now(), index=True)
     ts_modified = DateTimeField(default=datetime.datetime.now(), index=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = re.sub('[^\w]+', '-', self.title.lower())
+            self.slug = re.sub('[^\w]+', '-', self.name.lower())
         self.ts_modified = datetime.datetime.now()
         ret = super(Project, self).save(*args, **kwargs)
         return ret
+
+    @property
+    def html_content(self):
+        hilite = CodeHiliteExtension(linenums=False, css_class='highlight')
+        extras = ExtraExtension()
+        markdown_content = markdown(self.desc, extensions=[hilite, extras])
+        oembed_content = parse_html(
+            markdown_content,
+            oembed_providers,
+            urlize_all=True,
+            maxwidth=app.config['SITE_WIDTH'])
+        return Markup(oembed_content)
 
 class FTSEntry(FTSModel):
     entry_id = IntegerField()

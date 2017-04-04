@@ -91,7 +91,29 @@ def create():
 def projects():
     user = current_user
     query = Project.select().order_by(Project.ts_created.desc())
-    return object_list('projects.html', query)
+    return object_list('projects/list.html', query)
+
+@app.route('/projects/create', methods=['GET', 'POST'])
+@login_required
+def projects_create():
+    if request.method == 'POST':
+        if request.form.get('name') and request.form.get('desc'):
+            project = Project.create(
+                name=request.form['name'],
+                desc=request.form['desc'])
+            flash('Project created successfully.', 'success')
+            return redirect(url_for('projects_detail', slug=project.slug))
+        else:
+            flash('Name and Content are required.', 'danger')
+    project = False
+    return render_template('projects/create.html', project=project)
+
+@app.route('/projects/<slug>')
+@login_required
+def projects_detail(slug):
+    query = Project.select()
+    project = get_object_or_404(query, Project.slug == slug)
+    return render_template('projects/details.html', project=project)
 
 @app.route('/ideas')
 @login_required

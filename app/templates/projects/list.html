@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Projects{% endblock %}
+
+{% block content_title %}{% if search %}Search "{{ search }}"{% else %}Projects{% endif %}{% endblock %}
+
+{% block content %}
+  {% for project in object_list %}
+    {% if search %}
+      {% set project = project.project %}
+    {% endif %}
+    <h3>
+      <a href="{{ url_for('projects_detail', slug=project.slug) }}">
+        {{ project.name }}
+      </a>
+    </h3>
+    <p>{{ project.ts_created.strftime('%#m/%#d/%Y at %#I:%M%p') }}</p>
+  {% endfor %}
+{% endblock %}

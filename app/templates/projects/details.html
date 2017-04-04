@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.title }}{% endblock %}
+
+{% block content_title %}
+  {{ project.title }}
+{% endblock %}
+
+{% block extra_header %}
+{% if current_user.is_authenticated %}
+<li><a href="{{ url_for('edit', slug=project.slug) }}"><i class="fa fa-pencil" aria-hidden="true"> Edit</i></a></li>
+{% endif %}
+{% endblock %}
+
+{% block collapse_buttons %}
+<li><a href="{{ url_for('edit', slug=project.slug) }}"><i class="fa fa-pencil" aria-hidden="true"> Edit</i></a></li>
+<button class="btn btn-default">Button</button>
+{% endblock %}
+
+{% block content %}
+  <p>{{ project.ts_created.strftime('%#m/%#d/%Y at %#I:%M%p') }}</p>
+  {{ project.html_content }}
+{% endblock %}
